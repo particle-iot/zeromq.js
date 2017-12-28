@@ -1019,6 +1019,12 @@ namespace zmq {
       MessageReference* msgref_;
   };
 
+  static void
+  on_uv_close(uv_handle_t *handle)
+  {
+    delete handle;
+  }
+
 #if ZMQ_CAN_MONITOR
   NAN_METHOD(Socket::Monitor) {
     int64_t timer_interval = 10; // default to 10ms interval
@@ -1076,6 +1082,7 @@ namespace zmq {
       return;
     }
     uv_timer_stop(this->monitor_handle_);
+    uv_close(reinterpret_cast<uv_handle_t*>(this->monitor_handle_), on_uv_close);
     this->monitor_handle_ = NULL;
     this->monitor_socket_ = NULL;
   }
@@ -1401,12 +1408,6 @@ namespace zmq {
     return;
   }
 
-
-  static void
-  on_uv_close(uv_handle_t *handle)
-  {
-    delete handle;
-  }
 
   void
   Socket::Close() {
