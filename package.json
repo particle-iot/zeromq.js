@@ -6,7 +6,7 @@
   "gypfile": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/zeromq/zeromq.js.git"
+    "url": "https://github.com/particle-iot/zeromq.js.git"
   },
   "dependencies": {
     "nan": "^2.6.2",
